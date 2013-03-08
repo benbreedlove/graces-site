@@ -189,7 +189,7 @@ CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_DIRNAME
 # Example: "http://media.lawrence.com/static/"
 # FIXME POINT AT S3 INSTANCE 
 #STATIC_URL = "http://d1dvxo21zo8jey.cloudfront.net/static/"
-STATIC_URL = "http://solar_powered.s3.amazonaws.com/static/"
+STATIC_URL = "http://solar_powered.s3.amazonaws.com/"
 
 
 # Absolute path to the directory static files should be collected to.
@@ -197,7 +197,7 @@ STATIC_URL = "http://solar_powered.s3.amazonaws.com/static/"
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
 #STATIC_ROOT = os.path.join(PROJECT_ROOT, STATIC_URL.strip("/"))
-STATIC_ROOT = STATIC_URL
+STATIC_ROOT = STATIC_URL + "static/"
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.

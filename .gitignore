@@ -1,3 +1,4 @@
+awscreds.txt
 *.pyc
 *.pyo
 *.db
