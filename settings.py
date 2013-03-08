@@ -150,10 +150,11 @@ STATICFILES_FINDERS = (
 # DATABASES #
 #############
 
+#SOUTH_DATABASE_ADAPTERS = {'default':'south.db.postgresql_psycopg2'}
 DATABASES = {
     "default": {
         # Add "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".
-        "ENGINE": "django.db.backends.",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
         # DB name or path to database file if using sqlite3.
         "NAME": "",
         # Not used with sqlite3.
@@ -167,6 +168,12 @@ DATABASES = {
     }
 }
 
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 #########
 # PATHS #
@@ -371,13 +378,5 @@ STATICFILES_STORAGE = 's3utils.StaticRootS3BotoStorage'
 # AWS Settings
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-#FIXME
-AWS_STORAGE_BUCKET_NAME = 'mezz_test'
-
-# Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
-
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+AWS_STORAGE_BUCKET_NAME = 'solar_powered'
 
