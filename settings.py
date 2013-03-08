@@ -188,7 +188,9 @@ CACHE_MIDDLEWARE_KEY_PREFIX = PROJECT_DIRNAME
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 # FIXME POINT AT S3 INSTANCE 
-STATIC_URL = "/static/"
+#STATIC_URL = "http://d1dvxo21zo8jey.cloudfront.net/static/"
+STATIC_URL = "http://solar_powered.s3.amazonaws.com/static/"
+
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -327,13 +329,6 @@ DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
 #     "ADMIN_PASS": "", # Live admin user password
 # }
 
-# Parse database configuration from $DATABASE_URL
-import dj_database_url
-DATABASES['default'] =  dj_database_url.config()
-
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
 
 ##################
 # LOCAL SETTINGS #
@@ -376,5 +371,13 @@ STATICFILES_STORAGE = 's3utils.StaticRootS3BotoStorage'
 # AWS Settings
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_STORAGE_BUCKET_NAME = 'solarpowered'
+#FIXME
+AWS_STORAGE_BUCKET_NAME = 'mezz_test'
+
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 

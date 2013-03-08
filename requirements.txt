@@ -8,8 +8,11 @@ distribute==0.6.31
 dj-database-url==0.2.1
 django-debug-toolbar==0.9.4
 django-storages==1.1.6
+filebrowser-safe==0.2.19
 grappelli-safe==0.2.13
 html5lib==0.95
 psycopg2==2.4.6
+python-dateutil==1.5
 pytz==2012j
+requests==1.1.0
 wsgiref==0.1.2
