@@ -15,7 +15,6 @@ urlpatterns = patterns("",
 
     # Change the admin prefix here to use an alternate URL for the
     # admin interface, which would be marginally more secure.
-    #why doesn't this work?
     ("^admin/", include(admin.site.urls)),
 
     # We don't want to presume how your homepage works, so here are a
