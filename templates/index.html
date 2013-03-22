@@ -3,15 +3,44 @@
 {% load i18n future mezzanine_tags blog_tags keyword_tags disqus_tags %}
 
 {% block meta_title %}{% trans "Home" %}{% endblock %}
-{% block title %}{% trans "Home" %}{% endblock %}
 
-{% block breadcrumb_menu %}
-<li class="active">{% trans "Home" %}</li>
-{% endblock %}
 
-{% block main %}
+{% block pre_twocolumn %}
+<style>/* FIXME MOVE TO FILE THIS IS BAD */
+
+    #headline_slider {
+        overflow: hidden;
+        padding-bottom: 3em;
+    }
+    .blog-list-detail{
+    }
+    .swipe {
+      overflow: hidden;
+      visibility: hidden;
+      position: relative;
+    }
+    .swipe-wrap {
+      overflow: hidden;
+      position: relative;
+    }
+    .swipe-wrap > div {
+      float:left;
+      width:100%;
+      position: relative;
+    }
+</style>
+<div class="slider swipe" id="headline_slider">
+<div class="swipe-wrap container">
 {% for blog_post in slider_posts %}
-<h1>blog here</h1>
+<div class="slider_post">
+
+<div class="slider_image span6">
+{% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
+<img class="featured-slider" src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 0 600 %}">
+{% endif %}
+</div>
+
+<div class="slider_content span5">
 {% block blog_post_list_post_title %}
 {% editable blog_post.title %}
 <h2>
@@ -19,6 +48,12 @@
 </h2>
 {% endeditable %}
 {% endblock %}
+{% block blog_post_list_post_content %}
+{% editable blog_post.description %}
+{{ blog_post.description|safe }}
+{% endeditable %}
+{% endblock %}
+
 {% block blog_post_list_post_metainfo %}
 {% editable blog_post.publish_date %}
 <h6>
@@ -37,20 +72,8 @@
 {% endeditable %}
 {% endblock %}
 
-{% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
-{% block blog_post_list_post_featured_image %}
-<img class="featured-thumb" src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 90 90 %}">
-{% endblock %}
-{% endif %}
-
-{% block blog_post_list_post_content %}
-{% editable blog_post.content %}
-{{ blog_post.description_from_content|safe }}
-{% endeditable %}
-{% endblock %}
-
 {% block blog_post_list_post_links %}
-<p class="blog-list-detail">
+<p >
     {% if blog_post.keyword_list %}
     {% trans "Tags" %}:
     {% spaceless %}
@@ -74,7 +97,11 @@
     {% endif %}
 </p>
 {% endblock %}
+</div>
+</div>
 {% endfor %}
+</div>
+</div>
 {% comment %}
 {% blocktrans %}
 <h2>Congratulations!</h2>
@@ -93,4 +120,80 @@
 </ul>
 {% endblocktrans %}
 {% endcomment %}
+<!-- FIXME MOVE THIS TO S3 -->
+<script src="https://raw.github.com/bradbirdsall/Swipe/master/swipe.js"></script>
+<script>
+window.headlineSwipe = new Swipe(document.getElementById('headline_slider'), {
+  speed: 400,
+  auto: 7000,
+  continuous: true,
+  disableScroll: false,
+  stopPropagation: false,
+  callback: function(index, elem) {},
+  transitionEnd: function(index, elem) {}
+});
+
+</script>
+{% endblock %}
+{% block main %}
+{% for blog_post in section_posts %}
+
+<div class="span4">
+{% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
+<img class="featured-section" src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 350 300 %}">
+{% endif %}
+</div>
+
+<div class="slider_content span4">
+{% editable blog_post.title %}
+<h2>
+    <a href="{{ blog_post.get_absolute_url }}">{{ blog_post.title }}</a>
+</h2>
+{% endeditable %}
+{% editable blog_post.description %}
+{{ blog_post.description|safe }}
+{% endeditable %}
+
+{% editable blog_post.publish_date %}
+<h6>
+    {% trans "Posted by" %}:
+    {% with blog_post.user as author %}
+    <a href="{% url "blog_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
+    {% endwith %}
+    {% if blog_post.category_list %}
+    {% trans "in" %}
+    {% for category in blog_post.category_list %}
+    <a href="{% url "blog_post_list_category" category.slug %}">{{ category }}</a>
+    {% endfor %}
+    {% endif %}
+    {% blocktrans with sometime=blog_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
+</h6>
+{% endeditable %}
+
+<p >
+    {% if blog_post.keyword_list %}
+    {% trans "Tags" %}:
+    {% spaceless %}
+    {% for tag in blog_post.keyword_list %}
+    <a href="{% url "blog_post_list_tag" tag.slug %}" class="tag">{{ tag }}</a>
+    {% endfor %}
+    {% endspaceless %}
+    <br>
+    {% endif %}
+    <a href="{{ blog_post.get_absolute_url }}">{% trans "read more" %}</a>
+    /
+    {% if settings.COMMENTS_DISQUS_SHORTNAME %}
+    <a href="{{ blog_post.get_absolute_url }}#disqus_thread"
+        data-disqus-identifier="{% disqus_id_for blog_post %}">
+        {% trans "Comments" %}
+    </a>
+    {% else %}
+    <a href="{{ blog_post.get_absolute_url }}#comments">
+        {% blocktrans count blog_post.comments_count as comments_count %}1 comment{% plural %}{{ comments_count }} comments{% endblocktrans %}
+    </a>
+    {% endif %}
+</p>
+</div>
+{% endfor %}
+
 {% endblock %}

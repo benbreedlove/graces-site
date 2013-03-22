@@ -8,8 +8,9 @@
 <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
 <meta name="description" content="{% block meta_description %}{% endblock %}">
 <title>{% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
-<link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
-
+<link rel="shortcut icon" href="{{ STATIC_URL }}static/img/solar_powered_icon.ico">
+<link rel="icon" href="{{ STATIC_URL }}static/img/solar_powered_icon.ico">
+<link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}static/img/icon_large.png">
 {% ifinstalled mezzanine.blog %}
 <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
 <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
@@ -47,19 +48,27 @@ $(function() {
 
 </head>
 <body id="{% block body_id %}body{% endblock %}">
-        {% search_form "all" %}
+<div class="container">
+    <div class="row">
+        <div class="span12 middle" style="height: 300px;background-image: url('https://s3.amazonaws.com/solar_powered/static/img/solar-powered-header.jpg');background-size: cover;">
+        </div>
+    </div>
+</div>
 
+<div class="container">
 <div class="navbar">
 <div class="navbar-inner">
-<div class="container">
-    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-    </a>
-    <div class="nav-collapse">
-        {% page_menu "pages/menus/dropdown.html" %}
-    </div>
+        <div class="span10 middle">
+        {% search_form "all" %}
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </a>
+        <div class="nav-collapse">
+            {% page_menu "pages/menus/dropdown.html" %}
+        </div>
+        </div>
 </div>
 </div>
 </div>
@@ -77,6 +86,7 @@ $(function() {
 
 <h1>{% block title %}{% endblock %}</h1>
 
+{% block pre_twocolumn %}{% endblock %}
 
 </div>
 
@@ -91,13 +101,21 @@ $(function() {
     {% nevercache %}
     {% include "includes/user_panel.html" %}
     {% endnevercache %}
-    <div class="panel">
     {% block right_panel %}
-    {% ifinstalled mezzanine.twitter %}
-    {% include "twitter/tweets.html" %}
-    {% endifinstalled %}
-    {% endblock %}
+
+    <div class="panel">
+        <h2>widgets will go here</h2>
     </div>
+
+    {% ifinstalled mezzanine.twitter %}
+    <div class="panel">
+    {% include "twitter/tweets.html" %}
+    </div>
+    {% endifinstalled %}
+    <div class="panel">
+    {% include "blog/includes/filter_panel.html" %}
+    </div>
+    {% endblock %}
 </div>
 
 </div>
