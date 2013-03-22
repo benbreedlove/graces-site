@@ -73,8 +73,18 @@ import os
 
 # Setting to turn on featured images for blog posts. Defaults to False.
 #
-# BLOG_USE_FEATURED_IMAGE = True
+BLOG_USE_FEATURED_IMAGE = True
 
+
+RICHTEXT_WIDGET_CLASS = "ckeditor.widgets.CKEditorWidget"
+RICHTEXT_FILTER_LEVEL = "None"
+CKEDITOR_CONFIGS = {
+        'default': {
+            'toolbar': 'Full',
+            'height': 300,
+            'width': 850,
+            },
+        }
 # If True, the south application will be automatically added to the
 # INSTALLED_APPS setting.
 USE_SOUTH = True
@@ -245,6 +255,7 @@ INSTALLED_APPS = (
     "mezzanine.pages",
     "mezzanine.galleries",
     "mezzanine.twitter",
+    "ckeditor",
     #"mezzanine.accounts",
     #"mezzanine.mobile",
 )
@@ -339,6 +350,9 @@ STATICFILES_STORAGE = 's3utils.StaticRootS3BotoStorage'
 AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 AWS_STORAGE_BUCKET_NAME = 'solar_powered'
+
+CKEDITOR_UPLOAD_PREFIX = MEDIA_URL
+CKEDITOR_UPLOAD_PATH = ''
 
 import dj_database_url
 DATABASES['default'] =  dj_database_url.config()

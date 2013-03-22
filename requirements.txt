@@ -17,4 +17,5 @@ pytz==2012j
 raven==3.1.17
 requests==1.1.0
 wsgiref==0.1.2
+django-ckeditor==3.6.2.1
 ./s3utils

@@ -1,6 +1,7 @@
 
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
+import views
 
 from mezzanine.core.views import direct_to_template
 
@@ -13,6 +14,8 @@ admin.autodiscover()
 
 urlpatterns = patterns("",
 
+    url("^ckeditor/upload/", view="views.ckupload"),
+    (r'^ckeditor/', include('ckeditor.urls')),
     # Change the admin prefix here to use an alternate URL for the
     # admin interface, which would be marginally more secure.
     ("^admin/", include(admin.site.urls)),
@@ -27,7 +30,7 @@ urlpatterns = patterns("",
     # one homepage pattern, so if you use a different one, comment this
     # one out.
 
-    url("^$", direct_to_template, {"template": "index.html"}, name="home"),
+    url("^$", view="views.blog_homepage", name="home"),
 
     # HOMEPAGE AS AN EDITABLE PAGE IN THE PAGE TREE
     # ---------------------------------------------
