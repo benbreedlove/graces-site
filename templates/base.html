@@ -44,6 +44,9 @@ $(function() {
 <script src="{{ STATIC_URL }}js/html5shiv.js"></script>
 <![endif]-->
 
+{#ugh this is stupid this should work but doesn't {{ richtext_media|safe }} #}
+<script type="text/javascript" src="http://solar_powered.s3.amazonaws.com/ckeditor/ckeditor/ckeditor.js"></script>
+
 {% block extra_head %}{% endblock %}
 
 </head>
@@ -130,5 +133,6 @@ $(function() {
 
 {% include "includes/footer_scripts.html" %}
 
+{% block extra_footer_scripts %}{% endblock %}
 </body>
 </html>

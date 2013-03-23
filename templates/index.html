@@ -4,39 +4,18 @@
 
 {% block meta_title %}{% trans "Home" %}{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="https://s3.amazonaws.com/solar_powered/css/homepage.css">
+{% endblock %}
 
 {% block pre_twocolumn %}
-<style>/* FIXME MOVE TO FILE THIS IS BAD */
-
-    #headline_slider {
-        overflow: hidden;
-        padding-bottom: 3em;
-    }
-    .blog-list-detail{
-    }
-    .swipe {
-      overflow: hidden;
-      visibility: hidden;
-      position: relative;
-    }
-    .swipe-wrap {
-      overflow: hidden;
-      position: relative;
-    }
-    .swipe-wrap > div {
-      float:left;
-      width:100%;
-      position: relative;
-    }
-</style>
-<div class="slider swipe" id="headline_slider">
-<div class="swipe-wrap container">
+<div class="slider container" id="headline_slider">
 {% for blog_post in slider_posts %}
 <div class="slider_post">
 
 <div class="slider_image span6">
 {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
-<img class="featured-slider" src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 0 600 %}">
+<div style="background-image: url('{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 0 600 %}');"></div>
 {% endif %}
 </div>
 
@@ -101,6 +80,9 @@
 </div>
 {% endfor %}
 </div>
+<div class="slider_button_holder">
+<div class="slider_button prev_slider_button"></div>
+<div class="slider_button next_slider_button"></div>
 </div>
 {% comment %}
 {% blocktrans %}
@@ -120,31 +102,18 @@
 </ul>
 {% endblocktrans %}
 {% endcomment %}
-<!-- FIXME MOVE THIS TO S3 -->
-<script src="https://raw.github.com/bradbirdsall/Swipe/master/swipe.js"></script>
-<script>
-window.headlineSwipe = new Swipe(document.getElementById('headline_slider'), {
-  speed: 400,
-  auto: 7000,
-  continuous: true,
-  disableScroll: false,
-  stopPropagation: false,
-  callback: function(index, elem) {},
-  transitionEnd: function(index, elem) {}
-});
-
-</script>
 {% endblock %}
 {% block main %}
 {% for blog_post in section_posts %}
 
-<div class="span4">
+<div class="row section_post">
+<div class="span4 section_image">
 {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
-<img class="featured-section" src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 350 300 %}">
+<div style="background-image: url('{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 200 200 %}');"></div>
 {% endif %}
 </div>
 
-<div class="slider_content span4">
+<div class="span4 section_content">
 {% editable blog_post.title %}
 <h2>
     <a href="{{ blog_post.get_absolute_url }}">{{ blog_post.title }}</a>
@@ -194,6 +163,23 @@ window.headlineSwipe = new Swipe(document.getElementById('headline_slider'), {
     {% endif %}
 </p>
 </div>
+</div>
 {% endfor %}
 
+{% endblock %}
+{% block extra_footer_scripts %}
+<!-- FIXME MOVE THIS TO S3 -->
+<script type="text/javascript" src="https://s3.amazonaws.com/solar_powered/js/jquery.cycle.all.latest.js"></script>
+<script>
+        $('#headline_slider').cycle({
+            fx: 'fade',
+            pause: true,
+            timeout: 7000,
+            speed: 500,
+            fastOnEvent: 200,
+            next: jQuery('.next_slider_button') ,
+            prev: jQuery('.prev_slider_button') 
+        });
+
+</script>
 {% endblock %}
