@@ -363,7 +363,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Required by Django 1.5 in production
 #ALLOWED_HOSTS = [os.environ.get("ALLOWED_HOST")]
-ALLOWED_HOSTS = ['gracebreedlove.com']
+ALLOWED_HOSTS = ['gracebreedlove.com', 'solarpoweredyogi.com']
 
 ##################
 # LOCAL SETTINGS #

@@ -5,35 +5,69 @@
 {% block extra_js %}
 {{ block.super }}
 <style>/* FIXME MOVE TO SERVER */
+    body {
+        height: 100%;
+    }
+    html {
+        height: 100%;
+    }
+    .thumb_wrapper {
+        margin: 5px;
+    }
+    #slider_container {
+        position:absolute;
+        background-color: rgba(0,0,0,.8);
+        height: 100%;
+        width: 100%;
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
+    }
     .slider_wrapper {
+        height: 100%;
         overflow:hidden;
         position: relative;
         padding: 0;
         margin: 0;
         outline: 0;
-        padding-bottom: 100%;
     }
     .slider {
         vertical-align:baseline;
         position: relative;
         visibility: hidden;
         overflow:hidden;
-        height: 0;
+        height: 100%;
+    }
+    #slider_main div {
+    }
+    #slider_main .slider_wrapper {
+        height: 100%;
+        top: 0;
+        bottom: 0;
     }
     #slider_main {
-        padding-bottom: 80%;
+        padding-top: 1em;
+        height: 75%;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: hidden;
     }
     #slider_nav {
-        padding-bottom: 15%;
-        width: 75px;
+        height: 20%;
+        width: 90px;
         overflow: visible;
+    }
+    #slider_nav div {
+        height: 100%;
     }
     #slider_nav_wrapper {
         overflow: visible;
-        padding-left: 50%;
+        height: 100%;
     }
     #slider_nav_wrapper > li {
-        width: 75px;
+        width: 90px;
         overflow: hidden;
     }
     .slider li p {
@@ -42,8 +76,11 @@
     .slider div {
         background-size: contain;
         background-repeat: no-repeat;
+        background-position: center;
         height: 0;
-        padding-bottom: 100%;
+        top: 0;
+        bottom: 0;
+        height: 100%;
     }
     .slider_wrapper > li {
         float:left;
@@ -52,7 +89,12 @@
         margin: 0;
         padding: 0;
         outline: 0;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
         list-style-type: none;
+        height: 100%;
     }
 
 </style>
@@ -76,6 +118,13 @@
 {% endfor %}
 </ul>
 
+{% endwith %}
+{% endblock %}
+
+{% block very_top %}
+
+{% with page.gallery.images.all as images %}
+
 <div id="slider_container">
 {# full sized images for slider #}
 <div id="slider_main" class="slider" >
@@ -95,7 +144,9 @@
 <ul id="slider_nav_wrapper" class="slider_wrapper">
 {% for image in images %}
 <li>
+    <div class="thumbwrapper">
     <div id="thumb-image-{{ image.id }}" class="image_nav" style="background-image: url('{{ MEDIA_URL }}{% thumbnail image.file 75 75 %}');">
+    </div>
     </div>
 </li>
 {% endfor %}
@@ -166,7 +217,8 @@ function Swipe(container, options) {
 
       if (browser.transitions) {
         slide.style.left = (pos * -width) + 'px';
-        move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
+        move(pos, (index > pos) ? -width * pos 
+            : (index < pos ? width * pos : 0), 0);
       }
 
     }
@@ -227,18 +279,11 @@ function Swipe(container, options) {
 
   function translate(index, dist, speed) {
 
-      if (!dist) {return;}
-      console.log(slides[index].style);
-    for (var i = 0; i < slides.length; i++) {
-        console.log(i);
-
-        var slide = slides[i];
+        var slide = slides[index];
         var style = slide && slide.style;
 
         if (!style) return;
 
-        var this_dist = (i - index) * dist * -1;
-        console.log(this_dist);
 
         style.webkitTransitionDuration = 
         style.MozTransitionDuration = 
@@ -246,11 +291,10 @@ function Swipe(container, options) {
         style.OTransitionDuration = 
         style.transitionDuration = speed + 'ms';
 
-        style.webkitTransform = 'translate(' + this_dist + 'px,0)' + 'translateZ(0)';
+        style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
         style.msTransform = 
         style.MozTransform = 
-        style.OTransform = 'translateX(' + this_dist + 'px)';
-    }
+        style.OTransform = 'translateX(' + dist + 'px)';
 
   }
 
@@ -399,9 +443,9 @@ function Swipe(container, options) {
             : 1 );                                 // no resistance if false
         
         // translate 1:1
-        //translate(index-1, delta.x + slidePos[index-1], 0);
+        translate(index-1, delta.x + slidePos[index-1], 0);
         translate(index, delta.x + slidePos[index], 0);
-        //translate(index+1, delta.x + slidePos[index+1], 0);
+        translate(index+1, delta.x + slidePos[index+1], 0);
 
       }
 
@@ -432,16 +476,16 @@ function Swipe(container, options) {
 
           if (direction) {
 
-            //move(index-1, -width, 0);
+            move(index-1, -width, 0);
             move(index, slidePos[index]-width, speed);
-            //move(index+1, slidePos[index+1]-width, speed);
+            move(index+1, slidePos[index+1]-width, speed);
             index += 1;
 
           } else {
 
-            //move(index+1, width, 0);
+            move(index+1, width, 0);
             move(index, slidePos[index]+width, speed);
-            //move(index-1, slidePos[index-1]+width, speed);
+            move(index-1, slidePos[index-1]+width, speed);
             index += -1;
 
           }
@@ -450,9 +494,9 @@ function Swipe(container, options) {
 
         } else {
 
-          //move(index-1, -width, speed);
+          move(index-1, -width, speed);
           move(index, 0, speed);
-          //move(index+1, width, speed);
+          move(index+1, width, speed);
 
         }
 
@@ -514,12 +558,27 @@ function Swipe(container, options) {
       setup();
 
     },
-    slide: function(to, speed) {
+    slide: function(to) {
       
       // cancel slideshow
       stop();
       
-      slide(to, speed);
+        //uuughhhh.
+        var slide = jQuery(element);
+        console.log(element);
+        var dist = to * width * -1; 
+
+        slide.css('webkitTransitionDuration', speed + 'ms');
+        slide.css('MozTransitionDuration', speed + 'ms');
+        slide.css('msTransitionDuration', speed + 'ms');
+        slide.css('OTransitionDuration', speed + 'ms');
+        slide.css('transitionDuration', speed + 'ms');
+
+        slide.css('webkitTransform', 'translate(' + dist + 'px,0) translateZ(0)');
+        slide.css('msTransform', 'translateX(' + dist + 'px)');
+        slide.css('MozTransform', 'translateX(' + dist + 'px)');
+        slide.css('OTransform', 'translateX(' + dist + 'px)');
+
 
     },
     prev: function() {
@@ -566,7 +625,9 @@ function Swipe(container, options) {
         slide.style.width = '100%';
         slide.style.left = 0;
 
-//        if (browser.transitions) translate(pos, 0, 0);
+        if (browser.transitions) {
+            translate(pos, 0, 0);
+        }
 
       }
 
@@ -608,21 +669,27 @@ if ( window.jQuery || window.Zepto ) {
 <script>
 var main_slider = new Swipe(document.getElementById('slider_main'), {
   speed: 400,
-  continuous: true,
+  continuous: false,
   disableScroll: false,
   stopPropagation: false,
-  auto: 3000,
 });
 
 var nav_slider = new Swipe(document.getElementById('slider_nav'), {
   speed: 400,
-  auto: 3000,
-  continuous: true,
+  continuous: false,
   disableScroll: false,
   stopPropagation: false,
 });
-jQuery('#slider_nav').css('padding-left', '50%');
+jQuery('#slider_nav').css('padding-left', '45%');
+jQuery('#slider_nav_wrapper li').each(function() {
+    $(this).click(function() {
+        var new_slide = $(this).attr('data-index'); 
+        main_slider.slide(new_slide);
+        nav_slider.slide(new_slide);
+    });
+});
+main_slider.slide(0);
+nav_slider.slide(0);
 
-console.log('didnt breka');
 </script>
 {% endblock %}
