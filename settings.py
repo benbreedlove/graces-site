@@ -256,6 +256,7 @@ INSTALLED_APPS = (
     "mezzanine.galleries",
     "mezzanine.twitter",
     "ckeditor",
+    "importwp",
     #"mezzanine.accounts",
     #"mezzanine.mobile",
 )
