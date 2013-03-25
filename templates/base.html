@@ -33,6 +33,9 @@
         margin-top: 3em;
         background-color: #DDD;
     }
+    #base_sidebar {
+        margin-top: 2em;
+    }
     .search-query {
         width: 136px;
     }
@@ -187,14 +190,14 @@ $(function() {
     {% block main %}{% endblock %}
 </div>
 
-<div class="span3 right">
+<div class="span3 right" id="base_sidebar">
     {% nevercache %}
     {% include "includes/user_panel.html" %}
     {% endnevercache %}
     {% block right_panel %}
 
     <div class="panel">
-        <h2>widgets will go here</h2>
+        <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FThe-Solar-Powered-Yogi%2F161693890629023&amp;width=200&amp;height=432&amp;colorscheme=light&amp;show_faces=true&amp;stream=false&amp;header=false&amp;force_wall=false" scrolling="no" frameborder="0" style="border: none; overflow: hidden; width: 200px;  height: 432px; background: #fff"></iframe>
     </div>
 
     {% ifinstalled mezzanine.twitter %}
