@@ -113,8 +113,8 @@
 {% for blog_post in section_posts %}
 
 <div class="row section_post">
-    <div class="section_post_holder">
-        <div class="span5 section_image">
+
+    <div class="span5 section_image">
         {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
         {% editable blog_post.featured_image %}
         <div style="background-image: url('{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 470 250 %}');"></div>
@@ -122,7 +122,7 @@
         {% endif %}
     </div>
 
-    <div class="span5 section_content">
+    <div class="span4 section_content">
     {% editable blog_post.title %}
     <h2>
         <a href="{{ blog_post.get_absolute_url }}">{{ blog_post.title }}</a>
@@ -174,7 +174,7 @@
         {% endif %}
     </p>
     </div>
-    </div>
+
 </div>
 {% endfor %}
 
@@ -201,6 +201,17 @@
             next: jQuery('.next_slider_button') ,
             prev: jQuery('.prev_slider_button') 
         });
+        $(document.body).resize(function() {
+            $('#headline_slider').cycle({
+                fx: 'fade',
+                pause: true,
+                timeout: 7000,
+                speed: 500,
+                fastOnEvent: 200,
+                next: jQuery('.next_slider_button') ,
+                prev: jQuery('.prev_slider_button') 
+            });
+        })
 
 </script>
 {% endblock %}
