@@ -15,7 +15,9 @@
 
 <div class="slider_image span6">
 {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
+{% editable blog_post.featured_image %}
 <div style="background-image: url('{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 0 600 %}');"></div>
+{% endeditable %}
 {% endif %}
 </div>
 
@@ -114,7 +116,9 @@
     <div class="section_post_holder">
         <div class="span5 section_image">
         {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
+        {% editable blog_post.featured_image %}
         <div style="background-image: url('{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 200 200 %}');"></div>
+        {% endeditable %}
         {% endif %}
     </div>
 
@@ -177,7 +181,7 @@
 <div class="row span9">
     <ul class="pager">
         <li class="next">
-            <a href="http://localhost:8000/blog/?page=3">
+            <a href="/blog/?page=3">
                 read more →
             </a>
         </li>
