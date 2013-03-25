@@ -27,6 +27,72 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}css/cartridge.css">
 {% endifinstalled %}
 {% block extra_css %}{% endblock %}
+
+<style> /* FIXME FINALIZE AND MOVE TO SERVER */
+    body {
+        margin-top: 3em;
+        background-color: #DDD;
+    }
+    .container {
+        background-color: white;
+    }
+    .flair {
+        background-color: #9efda7;
+    }
+    .slider {
+        background-color: #D8B689;
+    }
+    .section_content p, .slider_content p {
+        font-size: 1.5em;
+        line-height: 2em;
+    } 
+    .slider_content p {
+        text-align: center;
+        color: white;
+    }
+    .section_image {
+        height: 370px;
+    }
+    .section_post {
+        height: 450px;
+    }
+
+    .section_post_holder {
+        position: relative;
+        left: -88px;
+        width: 125%;
+    }
+    .section_image div {
+    }
+
+    .slider h2 {
+        margin-top: 2em;
+        margin-bottom: 1em;
+        width: 100%;
+        text-align: center;
+    }
+    .slider h2 a {
+        color: white;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+    a {
+        color: black;
+    }
+    .titlebar {
+        margin: 0;
+    }
+    .navbar {
+        background-color: white;
+        margin-bottom: 0px;
+        padding-bottom: 20px;
+    }
+    .navbar-inner {
+        background-image: none;
+    }
+</style>
 {% endcompress %}
 
 {% compress js %}
@@ -88,7 +154,7 @@ $(function() {
 {% endnevercache %}
 
 
-<h1>{% block title %}{% endblock %}</h1>
+<h1 class="titlebar">{% block title %}{% endblock %}</h1>
 
 {% block pre_twocolumn %}{% endblock %}
 
