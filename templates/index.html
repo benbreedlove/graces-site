@@ -117,7 +117,7 @@
         <div class="span5 section_image">
         {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
         {% editable blog_post.featured_image %}
-        <div style="background-image: url('{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 200 200 %}');"></div>
+        <div style="background-image: url('{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 470 250 %}');"></div>
         {% endeditable %}
         {% endif %}
     </div>
