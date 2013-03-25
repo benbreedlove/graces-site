@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
-{% load pages_tags mezzanine_tags i18n future %}
+{% load pages_tags mezzanine_tags i18n future sidepanel_extras %}
 <head>
 
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -235,19 +235,23 @@ $(function() {
 </div>
 
 <div class="span3 right" id="base_sidebar">
+    {% block extrapanels %}
+        {% show_sidepanels %}
+    {% endblock %}
+    {{ page.objects.keys }}
     {% nevercache %}
     {% include "includes/user_panel.html" %}
     {% endnevercache %}
     {% block right_panel %}
 
-    <div class="panel">
+
         {% comment %}
+    <div class="panel">
         <h3>
             <a target="_blank" href="https://www.facebook.com/SolarPoweredYogi">
                 “Like” me on Facebook for even more travel updates and photos!
             </a>
         </h3>
-        {% endcomment %}
         <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FThe-Solar-Powered-Yogi%2F161693890629023&amp;width=200&amp;height=432&amp;colorscheme=light&amp;show_faces=true&amp;stream=false&amp;header=false&amp;force_wall=false" scrolling="no" frameborder="0" style="border: none; overflow: hidden; width: 200px;  height: 432px; background: #fff"></iframe>
     </div>
 
@@ -256,6 +260,7 @@ $(function() {
     {% include "twitter/tweets.html" %}
     </div>
     {% endifinstalled %}
+        {% endcomment %}
     <div class="panel">
     {% include "blog/includes/filter_panel.html" %}
     </div>
