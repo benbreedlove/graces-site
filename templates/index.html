@@ -11,7 +11,7 @@
 {% block pre_twocolumn %}
 <div class="slider container" id="headline_slider">
 {% for blog_post in slider_posts %}
-<div class="slider_post">
+<div class="slider_post container">
 
 <div class="slider_image span6">
 {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}

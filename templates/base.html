@@ -45,7 +45,7 @@
     .flair {
         background-color: #9efda7;
     }
-    .slider {
+    .slider_post {
         background-color: #D8B689;
     }
     .section_content p, .slider_content p {
@@ -67,27 +67,41 @@
     }
     .section_post {
         height: 250px;
-    }
-    .section_post_holder {
-        height: 250px;
-        overflow-y: hidden;
         overflow-x: visible;
     }
+    @media (min-width: 767px) {
+        .section_post_holder {
+            height: 250px;
+            overflow-y: hidden;
+            overflow-x: visible;
+        }
 
-    .section_post_holder {
-        position: relative;
-        left: -150px;
-        width: 125%;
+        .section_post_holder {
+            position: relative;
+            left: -150px;
+            width: 125%;
+        }
     }
-    .section_image div {
-    }
-
     .slider h2 {
         margin-top: 2em;
         margin-bottom: 1em;
         width: 100%;
         text-align: center;
     }
+    @media (min-width: 767px) and (max-width: 980px ) {
+        .section_post, .section_post_holder {
+            height: 300px;
+        }
+        .slider h2 {
+            margin-top: 1em;
+        }
+        .slider_content p {
+            font-size: 1.25em;
+        }
+    }
+    .section_image div {
+    }
+
     .slider h2 a {
         color: white;
         text-align: center;
@@ -100,6 +114,21 @@
     }
     .main_content > * {
         margin-left: 2em;
+    }
+    @media (max-width: 767px) {
+        .main_content > * {
+            margin-left: 0em;
+        }
+        body {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .slider_image {
+            height: 362px;
+        }
+        .slider_content {
+            height: 362px;
+        }
     }
     .titlebar {
         margin-left: .8em;
@@ -199,11 +228,13 @@ $(function() {
     {% block right_panel %}
 
     <div class="panel">
+        {% comment %}
         <h3>
             <a target="_blank" href="https://www.facebook.com/SolarPoweredYogi">
                 “Like” me on Facebook for even more travel updates and photos!
             </a>
         </h3>
+        {% endcomment %}
         <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FThe-Solar-Powered-Yogi%2F161693890629023&amp;width=200&amp;height=432&amp;colorscheme=light&amp;show_faces=true&amp;stream=false&amp;header=false&amp;force_wall=false" scrolling="no" frameborder="0" style="border: none; overflow: hidden; width: 200px;  height: 432px; background: #fff"></iframe>
     </div>
 
