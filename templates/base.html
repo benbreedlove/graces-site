@@ -121,32 +121,10 @@
         margin-left: 2em;
     }
     #blog_header {
-        height: 300px;
+        height: 292px;
         background-image: url('https://s3.amazonaws.com/solar_powered/static/img/solar-powered-header.jpg');
         background-size: cover;
         position: relative;
-    }
-    #blog_header_title {
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        font-size: 36px;
-        font-weight: 100;
-        text-decoration: none;
-        letter-spacing: 0.075em;
-        line-height: 48px;
-        padding: 32px 40px 18px;
-        display: inline-block;
-        color: #DDD;
-    }
-    #blog_header_description {
-        position: absolute;
-        bottom: 0px;
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.15em;
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        padding: 11px 40px;
-        color: #FFF;
-        font-weight: 300;
     }
     .container {
         width: 940px;
@@ -283,18 +261,12 @@ $(function() {
 <body id="{% block body_id %}body{% endblock %}">
     {% block very_top %}{% endblock %}
 <div class="container">
-    <div class="row">
-        <div class="span12 middle" id="blog_header">
-            <h1>
-                <a id="blog_header_title" title="The Solar-Powered Yogi" href="/">
-                    The Solar-Powered Yogi
-                </a>
-            </h1>
-            <h2 id="blog_header_description">
-                Yoga, Photography, Travel, Giving deep, Always Leaning Towards the Sun
-            </h2>
+    <a href="/">
+        <div class="row">
+            <div class="span12 middle" id="blog_header">
+            </div>
         </div>
-    </div>
+    </a>
 </div>
 
 <div class="container">
