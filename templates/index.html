@@ -202,6 +202,8 @@
             prev: jQuery('.prev_slider_button') 
         });
         $(document.body).resize(function() {
+            $('#headline_slider').cycle('destroy');
+
             $('#headline_slider').cycle({
                 fx: 'fade',
                 pause: true,
