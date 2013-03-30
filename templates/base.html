@@ -18,7 +18,7 @@
 
 {% compress css %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.responsive.css">
+<!--link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.responsive.css"-->
 <link rel="stylesheet" href="{{ STATIC_URL }}css/mezzanine.css">
 {% if LANGUAGE_BIDI %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/rtl.css">
@@ -29,6 +29,87 @@
 {% block extra_css %}{% endblock %}
 
 <style> /* FIXME FINALIZE AND MOVE TO SERVER */
+#headline_slider {
+    overflow: hidden;
+    height: 362px;
+}
+
+#headline_slider .slider_image {
+    position: relative;
+    height: 100%;
+    margin-left: 0;
+}
+.section_image {
+    position: relative;
+    height: 100%;
+}
+#headline_slider .slider_image div,
+.section_image div {
+    position: absolute;
+    margin-left: 0;
+    height: 100%;
+    display: block;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: auto;
+}
+.slider_post {
+    position: absolute;
+    margin-left: 0;
+    height: 100%;
+    display:block;
+    top: 0;
+    bottom: 0;
+    height: auto;
+}
+#headline_slider .slider_image div,
+.section_image div {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display:block;
+    background-size: cover;
+    background-position: center;
+}
+.slider_button_holder {
+    height: 0px;
+    position: relative;
+}
+.slider_button {
+    opacity: 0;
+    position: absolute;
+    display: block;
+    cursor: pointer;
+    height: 53px;
+    width: 32px;
+    top: -235px;
+    z-index: 50;
+}
+#headline_slider:hover + .slider_button_holder .slider_button,
+.slider_button_holder:hover .slider_button  {
+    opacity: .3;
+}
+.slider_button:hover {
+    opacity: 1!important;
+}
+.prev_slider_button {
+    left: 0px;
+    background: black url("https://s3.amazonaws.com/solar_powered/static/img/left_arrow.png") 11px 50% no-repeat;
+}
+.next_slider_button {
+    right: 0px;
+    background: black url("https://s3.amazonaws.com/solar_powered/static/img/right_arrow.png") 11px 50% no-repeat;
+}
+.section_post {
+    position: relative;
+    margin-top: 2em;
+    height: 200px;
+}
     body {
         margin-top: 3em;
         background-color: #DDD;
@@ -64,6 +145,9 @@
         color: #FFF;
         font-weight: 300;
     }
+    .container {
+        width: 940px;
+    }
     #base_sidebar {
         margin-top: 2em;
     }
@@ -83,7 +167,9 @@
         max-width: 100%;
     }
     .section_content h2 {
+        padding-top: .2em;
         font-size: 1.7em;
+        line-height: 32px;
         margin-top: 0px;
     }
     .slider_content p {
@@ -130,17 +216,6 @@
         width: 100%;
         text-align: center;
     }
-    @media (min-width: 767px) and (max-width: 980px ) {
-        .section_post, .section_post_holder {
-            height: 100%;
-        }
-        .slider h2 {
-            margin-top: 1em;
-        }
-        .slider_content p {
-            font-size: 1.25em;
-        }
-    }
 
     .slider h2 a {
         color: white;
@@ -157,40 +232,6 @@
     }
     .section_content p, .section_content h2 {
         padding-right: 1em;
-    }
-    @media (max-width: 767px) {
-        .main_content > * {
-            margin-left: 0em;
-        }
-        body {
-            padding-left: 0;
-            padding-right: 0;
-        }
-        .slider_image, .slider_content {
-            height: 362px;
-        }
-
-        .section_content, .section_image {
-            height: 100%;
-        }
-        .section_image div {
-            height: 100%;
-        } 
-        .section_post {
-            display: block;
-            height: auto;
-        }
-        .section_image {
-            position: absolute;
-            margin: 0;
-        }
-        .section_content {
-            margin: 0;
-            padding-top: 5px;
-            top: 0px;
-            bottom: 0px;
-            position: absolute;
-        }
     }
     .titlebar {
         margin-left: .8em;
