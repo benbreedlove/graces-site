@@ -28,7 +28,7 @@ def blog_homepage(request):
     blog_posts = BlogPost.objects.published(for_user=request.user)
 
     slider_posts = blog_posts[:4]
-    section_posts = blog_posts[4:15]
+    section_posts = blog_posts[0:15]
 
     context = { "slider_posts" : slider_posts, "section_posts": section_posts }
 
