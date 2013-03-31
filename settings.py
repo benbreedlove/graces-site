@@ -378,8 +378,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = os.environ.get("GMAIL_PASSWORD")
 EMAIL_PORT = 587
-FORMS_DISABLE_SEND_FROM_EMAIL_FIELD = True
-DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'solarpoweredyogi@gmail.com'
+#FORMS_DISABLE_SEND_FROM_EMAIL_FIELD = True
+#DEFAULT_FROM_EMAIL = SERVER_EMAIL = 'solarpoweredyogi@gmail.com'
 
 
 ##################
