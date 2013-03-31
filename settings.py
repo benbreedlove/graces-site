@@ -77,7 +77,7 @@ BLOG_USE_FEATURED_IMAGE = True
 
 
 RICHTEXT_WIDGET_CLASS = "ckeditor.widgets.CKEditorWidget"
-RICHTEXT_FILTER_LEVEL = "None"
+RICHTEXT_FILTER_LEVEL = 3
 CKEDITOR_CONFIGS = {
         'default': {
             'toolbar': 'Full',
