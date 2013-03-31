@@ -1,15 +1,21 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from mezzanine.conf import settings
-from mezzanine.core.models import Ownable, RichText
+from ckeditor.fields import RichTextField
 
-class Sidepanel(RichText):
+from mezzanine.conf import settings
+
+class Sidepanel(models.Model):
     """
     A sidepanel.
     """
+
+    content = RichTextField(config_name='sidebar')
+
     order = models.IntegerField(default=0)
 
+
+    search_fields = ("content",)
 
     def __unicode__(self):
         return str(self.order)

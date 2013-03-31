@@ -84,6 +84,11 @@ CKEDITOR_CONFIGS = {
             'height': 300,
             'width': 850,
             },
+        'sidebar': {
+            'toolbar': 'Full',
+            'height': 300,
+            'width': 200,
+            },
         }
 # If True, the south application will be automatically added to the
 # INSTALLED_APPS setting.
