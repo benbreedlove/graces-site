@@ -70,6 +70,7 @@
 {% endif %}
 
 {% for blog_post in blog_posts.object_list %}
+<article>
 {% block blog_post_list_post_title %}
 {% editable blog_post.title %}
 <h2 class="blog_list_post_title">
@@ -128,6 +129,7 @@
     {% endif %}
 </p>
 {% endblock %}
+</article>
 {% endfor %}
 
 <div class="blog_post_meta">

@@ -120,6 +120,9 @@
     .main_content.middle h6 {
         margin-left: 2em;
     }
+    .main_content h6.blog_post_meta {
+        margin-left: 0;
+    }
     #blog_header {
         height: 292px;
         background-image: url('https://s3.amazonaws.com/solar_powered/static/img/solar-powered-header.jpg');
@@ -213,11 +216,6 @@
     .titlebar {
         margin-left: .8em;
     }
-    /*
-    .blog_post_content, .middle .blog_post_meta, .blog_list_description, .blog-list-detail {
-        margin-left: 2em;
-    }
-    */
     .navbar {
         background-color: white;
         margin-bottom: 0px;
@@ -307,9 +305,12 @@ $(function() {
 <div class="container">
 <div class="row">
 
+{% block main_content %}
 <div class="span9 middle main_content">
+    <h1 class="titlebar">{% block inline_title %}{% endblock %}</h1>
     {% block main %}{% endblock %}
 </div>
+{% endblock %}
 
 <div class="span3 right" id="base_sidebar">
     {% block extrapanels %}
