@@ -83,11 +83,13 @@ CKEDITOR_CONFIGS = {
             'toolbar': 'Full',
             'height': 300,
             'width': 850,
+            'removeFormatAttributes': '',
             },
         'sidebar': {
             'toolbar': 'Full',
             'height': 300,
             'width': 200,
+            'removeFormatAttributes': '',
             },
         }
 # If True, the south application will be automatically added to the
