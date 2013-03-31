@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+{% load pages_tags mezzanine_tags i18n future sidepanel_extras %}
+<head>
+
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width">
+<meta name="description" content="{% block meta_description %}{% endblock %}">
+<title>{% block meta_title %}{% endblock %}</title>
+<link rel="shortcut icon" href="{{ STATIC_URL }}static/img/solar_powered_icon.ico">
+<link rel="icon" href="{{ STATIC_URL }}static/img/solar_powered_icon.ico">
+<link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}static/img/icon_large.png">
+
+{% compress css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css">
+<!--link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.responsive.css"-->
+<link rel="stylesheet" href="{{ STATIC_URL }}css/mezzanine.css">
+{% if LANGUAGE_BIDI %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/rtl.css">
+{% endif %}
+{% ifinstalled cartridge.shop %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/cartridge.css">
+{% endifinstalled %}
+{% block extra_css %}{% endblock %}
+
+<style> /* FIXME FINALIZE AND MOVE TO SERVER */
+    #headline_slider {
+        overflow: hidden;
+        height: 362px;
+    }
+
+    #headline_slider .slider_image {
+        position: relative;
+        height: 100%;
+        margin-left: 0;
+    }
+    .section_image {
+        position: relative;
+        height: 100%;
+    }
+    #headline_slider .slider_image div,
+    .section_image div {
+        position: absolute;
+        margin-left: 0;
+        height: 100%;
+        display: block;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: auto;
+    }
+    .slider_post {
+        position: absolute;
+        margin-left: 0;
+        height: 100%;
+        display:block;
+        top: 0;
+        bottom: 0;
+        height: auto;
+    }
+    #headline_slider .slider_image div,
+    .section_image div {
+        height: 100%;
+        width: 100%;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display:block;
+        background-size: cover;
+        background-position: center;
+    }
+    .slider_button_holder {
+        height: 0px;
+        position: relative;
+    }
+    .slider_button {
+        opacity: 0;
+        position: absolute;
+        display: block;
+        cursor: pointer;
+        height: 53px;
+        width: 32px;
+        top: -235px;
+        z-index: 50;
+    }
+    #headline_slider:hover + .slider_button_holder .slider_button,
+    .slider_button_holder:hover .slider_button  {
+        opacity: .3;
+    }
+    .slider_button:hover {
+        opacity: 1!important;
+    }
+    .prev_slider_button {
+        left: 0px;
+        background: black url("https://s3.amazonaws.com/solar_powered/static/img/left_arrow.png") 11px 50% no-repeat;
+    }
+    .next_slider_button {
+        right: 0px;
+        background: black url("https://s3.amazonaws.com/solar_powered/static/img/right_arrow.png") 11px 50% no-repeat;
+    }
+    .section_post {
+        position: relative;
+        margin-top: 2em;
+        height: 200px;
+    }
+    body {
+        margin-top: 3em;
+        background-color: #DDD;
+    }
+    .main_content > * {
+        margin-left: 2em;
+    }
+    .main_content.middle h6 {
+        margin-left: 2em;
+    }
+    .main_content h6.blog_post_meta {
+        margin-left: 0;
+        padding-right: 5px;
+    }
+    #blog_header {
+        height: 292px;
+        background-image: url('https://s3.amazonaws.com/solar_powered/static/img/solar-powered-header.jpg');
+        background-size: cover;
+        position: relative;
+    }
+    .container {
+        width: 940px;
+    }
+    #base_sidebar {
+        margin-top: 2em;
+    }
+    .search-query {
+        width: 136px;
+    }
+    .container {
+        background-color: white;
+    }
+    .flair {
+        background-color: #9efda7;
+    }
+    .main_content img {
+        max-width: 100%;
+    }
+    .section_content h2 {
+        padding-top: .2em;
+        font-size: 1.7em;
+        line-height: 32px;
+        margin-top: 0px;
+    }
+    .slider_content p {
+        color: white;
+        text-align: center;
+        font-size: 1.5em;
+        line-height: 2em;
+    }
+    .wp-caption {
+        width: auto!important;
+    }
+    .section_image div {
+        height: 250px;
+    }
+    .section_post {
+        margin-left: .5em;
+        clear: both;
+        min-height: 275px;
+        height: 100%;
+        padding-bottom: 10px;
+        background-color: rgba(220, 220, 220, 0.1);
+        border-radius: 5px;
+        border: 1px solid #DDD;
+    }
+    #base_sidebar {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .section_image {
+        margin-left: 0px;
+    }
+    .section_content {
+        margin-left: 10px;
+    }
+    .section_post_holder {
+        width: 100%;
+    }
+    .slider_post {
+        background-color: #D8B689;
+    }
+    .slider h2 {
+        margin-top: 2em;
+        margin-bottom: 1em;
+        width: 100%;
+        text-align: center;
+    }
+
+    .slider h2 a {
+        color: white;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100%;
+    }
+    a {
+        color: black;
+    }
+    .panel {
+        padding: 0px 10px 5px 10px;
+    }
+    .panel h2 {
+        margin-top: 5px;
+        line-height: 20px;
+    }
+    .section_content {
+        position:relative;
+    }
+    .section_content p, .section_content h2 {
+        padding-right: 1em;
+    }
+    .titlebar {
+        margin-left: .8em;
+    }
+    .navbar {
+        background-color: white;
+        margin-bottom: 0px;
+        padding-bottom: 20px;
+    }
+    .navbar-inner {
+        background-image: none;
+    }
+    /*
+    @media (max-width: 480px) {
+        .section_post, .section_post a {
+            color: white;
+            background-color: #D8B689;
+        }
+    }
+    */
+</style>
+<style>
+    /* portfolio home specific css */
+    .container, body, .title, .panel, .panel a {
+        background-color: grey;
+        background-color: #999;
+        color: white
+    }
+    .photocontainer {
+        position: absolute;
+    }
+    .resume {
+        float: right;
+    }
+
+    #photoarea, .photocontainer {
+        height: 100%;
+    }
+    #photoarea {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        background-repeat: no-repeat;
+    }
+    .translucent {
+        transition: opacity .5s;
+        -moz-transition: opacity .5s; /* Firefox 4 */
+        -webkit-transition: opacity .5s; /* Safari and Chrome */
+        -o-transition: opacity .5s; /* Opera */
+        opacity: 0;
+    }
+    .opaque {
+        transition: opacity .5s;
+        -moz-transition: opacity .5s; /* Firefox 4 */
+        -webkit-transition: opacity .5s; /* Safari and Chrome */
+        -o-transition: opacity .5s; /* Opera */
+        opacity: 1;
+    }
+    .resume {
+        border-left: 1px dashed white;
+        padding-left: 1em;
+    }
+    .resume h3 {
+        border-bottom: 1px solid white;
+    }
+    .navigation {
+        position: relative;
+        z-index: 5;
+    }
+    ul li {
+        list-style-type: none;
+    }
+    .panel {
+        margin-left: 0;
+    }
+</style>
+{% endcompress %}
+
+{% compress js %}
+<script src="{{ STATIC_URL }}mezzanine/js/{{ settings.JQUERY_FILENAME }}"></script>
+<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+<script>
+$(function() {
+    $('.middleinput:text, textarea').addClass('xlarge');
+    $('.control-group label').addClass('control-label');
+});
+</script>
+{% block extra_js %}{% endblock %}
+{% endcompress %}
+</head>
+<body>
+
+
+
+<div class="container">
+<div class="row span12 title">
+    <h1 class="titlebar" style="text-align: center;">{{ page.title }}</h1>
+</div>
+</div>
+<div class="container">
+<div class="row main_container">
+    <div class="span6 middle photocontainer">
+        <div id="photoarea" class="translucent">
+            &nbsp;
+        </div>
+        <div class="span2  navigation" >
+            <ul class="left_nav panel">
+              {% for gallery in galleries %}
+              {% if gallery.slug != "portfolio" %}
+              <li id="tree-menu-{{ gallery.html_id }}">
+                {% spaceless %}
+                <a href="{{ gallery.get_absolute_url }}" data-img="{% with gallery.images.all as images %}{% for image in images|slice:":1" %}{{ MEDIA_URL}}{{image.file}}{% endfor %}{% endwith %}">{{ gallery.title }}</a>
+                {% endspaceless %}
+              </li>
+              {% endif %}
+              {% endfor %}
+              <li>
+                <a href="/">Blog</a>
+              </li>
+            </ul>
+        </div>
+    </div>
+    <div class="span6 right resume">
+        <h3>Resume</h3>
+        {{ page.gallery.content|richtext_filter|safe }}
+        <h3>Contact</h3>
+        <ul>
+            <li>
+                email
+            </li>
+            <li>
+                blog link
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+
+{% include "includes/footer_scripts.html" %}
+<script>//FIXME MOVE TO SERVER AFTER THIS IS WORKING
+    var photoarea = jQuery('#photoarea');
+    jQuery('.left_nav li a').each(function() {
+        var $this = jQuery(this);
+        if ( $this.attr('data-img') ) {
+            $this.mouseover(function() {
+                var background = 'url("' + $this.attr('data-img') + '")';
+                photoarea.css('background-image', background);
+                photoarea.removeClass('translucent')
+                photoarea.addClass('opaque')
+            });
+            $this.mouseout(function() {
+                photoarea.addClass('translucent')
+                photoarea.removeClass('opaque')
+            });
+        }
+    });
+</script>
+
+{% block extra_footer_scripts %}{% endblock %}
+<input type="hidden" name="OBKey" value="34OO7ujADDKFHVjTuX0DqQ=="/> <script LANGUAGE="JavaScript">var OBCTm='1364686483314'; </script><script LANGUAGE="JavaScript" src="http://widgets.outbrain.com/claim.js"></script>
+</body>
+</html>

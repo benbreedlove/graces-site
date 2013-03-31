@@ -1,14 +1,16 @@
 import os
 from django.template import Context
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from mezzanine.core.views import direct_to_template
 
 from urlparse import urlparse, urlunparse
 
 from mezzanine.blog.models import BlogPost
 from mezzanine.blog.templatetags.blog_tags import blog_recent_posts
+from mezzanine.galleries.models import Gallery
+from mezzanine.pages.models import Page
 from mezzanine.conf import settings
-
 
 from mezzanine.utils.views import render
 
@@ -95,4 +97,13 @@ def ckupload(request):
         window.parent.CKEDITOR.tools.callFunction(%s, '%s');
     </script>""" % (request.GET['CKEditorFuncNum'], url))
 
-#def get_upload_filename
+def portfolio_homepage(request):
+    """ display the portfolio homepage
+    """
+    galleries = Gallery.objects.published(for_user=request.user)
+
+    page = get_object_or_404(Page, slug="portfolio")
+
+    context = { "galleries" : galleries, "page": page }
+
+    return render(request, "portfolio_home.html", context )
