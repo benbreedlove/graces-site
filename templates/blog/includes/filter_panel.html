@@ -1,6 +1,7 @@
 {% load blog_tags keyword_tags i18n future %}
 
 {% block blog_recent_posts %}
+{% comment %}
 {% blog_recent_posts 5 as recent_posts %}
 {% if recent_posts %}
 <div class="panel">
@@ -13,6 +14,7 @@
 </ul>
 </div>
 {% endif %}
+{% endcomment %}
 {% endblock %}
 
 {% block blog_months %}
@@ -85,6 +87,7 @@
 {% endcomment %}
 
 {% block blog_feeds %}
+{% comment %}
 <div class="panel">
 <h3>{% trans "Feeds" %}</h3>
 {% if tag %}
@@ -103,5 +106,6 @@
     <a href="{% url "blog_post_feed" "rss" %}">{% trans "RSS" %}</a> /
     <a href="{% url "blog_post_feed" "atom" %}">{% trans "Atom" %}</a>
 {% endif %}
+{% endcomment %}
 </div>
 {% endblock %}
