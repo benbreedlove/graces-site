@@ -169,50 +169,6 @@
 
 </div>
 </div>
-{% endblock %}
-
-{% block very_top %}
-
-{% with page.gallery.images.all as images %}
-
-<div id="slider_container">
-    <span id="close_slider" style="float:right;">X</span>
-{# full sized images for slider #}
-<div id="slider_main" class="slider" >
-<ul id="slider_main_wrapper" class="slider_wrapper">
-{% for image in images %}
-<li>
-    <div id="image-{{ image.id }}" class="image_full" style="background-image: url('{{ MEDIA_URL }}{{  image.file }}');">
-        <div class="panel span2 image_description">
-            <p>{{ image.description }}</p><p>{{ forloop.counter }} / {{ images|length }}</p>
-        </div>
-    </div>
-</li>
-{% endfor %}
-</ul>
-</div>
-
-{# thumbnailed sized images for slider nav #}
-<div id="slider_nav" class="slider">
-<ul id="slider_nav_wrapper" class="slider_wrapper">
-{% for image in images %}
-<li>
-    <div class="thumbwrapper">
-    <div id="thumb-image-{{ image.id }}" class="image_nav" style="background-image: url('{{ MEDIA_URL }}{% thumbnail image.file 75 75 %}');">
-    </div>
-    </div>
-</li>
-{% endfor %}
-</ul>
-</div>
-<div class="slider_button_holder">
-<div class="slider_button prev_slider_button"></div>
-<div class="slider_button next_slider_button"></div>
-</div>
-</div>
-
-{% endwith %}
-
 <script>//FIXME MOVE TO SERVER
 /*
  * Swipe 2.0
@@ -728,6 +684,35 @@ if ( window.jQuery || window.Zepto ) {
 }
 </script>
 <script>
+    var display_sliders = function() {
+        jQuery('#slider_container').css('display', 'block');
+        slider_keybind();
+    }
+    var hide_sliders = function() {
+        jQuery('#slider_container').css('display', 'none');
+        jQuery(document).unbind('keypress');
+    }
+
+    var slider_keybind = function() {
+        jQuery(document.body).bind('keydown', function(e) {
+            switch(e.keyCode) {
+                case 39:
+                    slide_next();
+                break;
+                case 37:
+                    slide_prev();
+                break;
+                case 27:
+                    hide_sliders();
+                break;
+            }
+        });
+    }
+    slider_keybind();
+
+    jQuery('#close_slider').click(function() {
+        hide_sliders()
+    });
     var main_slider;
     var nav_slider;
     var run_sliders = function(pos) {
@@ -746,9 +731,6 @@ if ( window.jQuery || window.Zepto ) {
           disableScroll: false,
           stopPropagation: false,
         });
-        jQuery('#close_slider').click(function() {
-            jQuery('#slider_container').css('display', 'none');
-        });
         jQuery('#slider_nav').css('padding-left', '45%');
     };
 
@@ -760,17 +742,26 @@ if ( window.jQuery || window.Zepto ) {
         });
     });
     jQuery('.next_slider_button').click(function() {
+        slide_next();
+    });
+    jQuery('.prev_slider_button').click(function() {
+        slide_prev()
+    });
+
+
+    var slide_next = function() {
         var slide = main_slider.getPos() + 1;
         if (slide >= main_slider.getNumSlides()) { return; };
         main_slider.slide(slide);
         nav_slider.slide(slide);
-    });
-    jQuery('.prev_slider_button').click(function() {
+    }
+
+    var slide_prev = function () {
         var slide = main_slider.getPos() - 1;
         if (slide < 0) { return; };
         main_slider.slide(slide);
         nav_slider.slide(slide);
-    });
+    }
 
     run_sliders(0);
 
@@ -811,5 +802,62 @@ if ( window.jQuery || window.Zepto ) {
         slide_to(pos);
     };
 
+    var thumbnails = jQuery('.gallery .thumbnail');
+    for (var i = 0 ; i < thumbnails.length; i++) {
+        var $this = jQuery(thumbnails[i]);
+        $this.attr('data-index', i);
+        $this.click(function(e) {
+            e.preventDefault();
+            var pos = jQuery(this).attr('data-index');
+            display_sliders();
+            slide_to(pos);
+            return false;
+        });
+    }
+
 </script>
+{% endblock %}
+
+{% block very_top %}
+
+{% with page.gallery.images.all as images %}
+
+<div id="slider_container">
+    <span id="close_slider" style="float:right;">X</span>
+{# full sized images for slider #}
+<div id="slider_main" class="slider" >
+<ul id="slider_main_wrapper" class="slider_wrapper">
+{% for image in images %}
+<li>
+    <div id="image-{{ image.id }}" class="image_full" style="background-image: url('{{ MEDIA_URL }}{{  image.file }}');">
+        <div class="panel span2 image_description">
+            <p>{{ image.description }}</p><p>{{ forloop.counter }} / {{ images|length }}</p>
+        </div>
+    </div>
+</li>
+{% endfor %}
+</ul>
+</div>
+
+{# thumbnailed sized images for slider nav #}
+<div id="slider_nav" class="slider">
+<ul id="slider_nav_wrapper" class="slider_wrapper">
+{% for image in images %}
+<li>
+    <div class="thumbwrapper">
+    <div id="thumb-image-{{ image.id }}" class="image_nav" style="background-image: url('{{ MEDIA_URL }}{% thumbnail image.file 75 75 %}');">
+    </div>
+    </div>
+</li>
+{% endfor %}
+</ul>
+</div>
+<div class="slider_button_holder">
+<div class="slider_button prev_slider_button"></div>
+<div class="slider_button next_slider_button"></div>
+</div>
+</div>
+
+{% endwith %}
+
 {% endblock %}
