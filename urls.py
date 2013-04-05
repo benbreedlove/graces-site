@@ -31,7 +31,7 @@ urlpatterns = patterns("",
     # one out.
 
     url("^$", view="views.blog_homepage", name="home"),
-    url("^portfolio/$", view="views.portfolio_homepage", name="page"),
+    #url("^portfolio/$", view="views.portfolio_homepage", name="page"),
 
     # HOMEPAGE AS AN EDITABLE PAGE IN THE PAGE TREE
     # ---------------------------------------------

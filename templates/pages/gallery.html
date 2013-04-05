@@ -1,7 +1,6 @@
-{% extends "portfolio_home.html" %}
+{% extends "pages/page.html" %}
 
-{% load i18n future pages_tags %}
-{% load mezzanine_tags keyword_tags %}
+{% load mezzanine_tags %}
 
 {% block extra_js %}
 {{ block.super }}
@@ -15,15 +14,16 @@
     .thumb_wrapper {
         margin: 5px;
     }
-    body {
-        margin-top: 0;
-    }
     #slider_container {
-        position:fixed;
+        display: none;
+        position:absolute;
         background-color: rgba(0,0,0,.8);
         height: 100%;
         width: 100%;
-        z-index: 10;
+        top: 0
+        bottom: 0
+        left: 0
+        right: 0
     }
     .slider_wrapper {
         height: 100%;
@@ -98,57 +98,12 @@
         height: 100%;
     }
 
-    .slider .image_description {
-        height: auto;
-    }
-    #close_slider {
-        font-size: 20px;
-        padding-right: 1em;
-        padding-top: 1em;
-        cursor: pointer;
-    }
-    .slider_button {
-        top: -75px;
-        transition: opacity .5s;
-        -moz-transition: opacity .5s; /* Firefox 4 */
-        -webkit-transition: opacity .5s; /* Safari and Chrome */
-        -o-transition: opacity .5s; /* Opera */
-        opacity: .3;
-    }
-    .slider_button:hover {
-        opacity: 1!important;
-    }
 </style>
 {% endblock %}
 
-
 {% block main %}
+{{ block.super }}
 
-<div class="container">
-<div class="row middle">
-    {% block left_nav %}
-    <div style="display:none">{% page_menu "pages/menus/dropdown.html" %}</div>
-                    <div class="span2  navigation" >
-                        <ul class="left_nav panel">
-                            {% for page in page_branch %}
-                                {% if page.title == 'Portfolio' %}
-                                    <li id="tree-menu-{{ page.html_id }}">
-                                        <a href="{{ page.get_absolute_url }}">Home</a>
-                                    </li>
-                                {% for gallery in page.children.all %}
-                                    <li id="tree-menu-{{ gallery.html_id }}">
-                                        <a href="{{ gallery.get_absolute_url }}" data-img="{% with gallery.images.all as images %}{% for image in images|slice:":1" %}{{ MEDIA_URL}}{{image.file}}{% endfor %}{% endwith %}">{{ gallery.title }}</a>
-                                    </li>
-                                {% endfor %}
-                                {% endif %}
-                            {% endfor %}
-                              <li>
-                                <a href="/">Blog</a>
-                              </li>
-                        </ul>
-                    </div>
-    {% endblock %}
-    <div class="span9">
 {% editable page.gallery.content %}
 {{ page.gallery.content|richtext_filter|safe }}
 {% endeditable %}
@@ -165,10 +120,43 @@
 </ul>
 
 {% endwith %}
-    </div>
+{% endblock %}
 
+{% block very_top %}
+
+{% with page.gallery.images.all as images %}
+
+<div id="slider_container">
+{# full sized images for slider #}
+<div id="slider_main" class="slider" >
+<ul id="slider_main_wrapper" class="slider_wrapper">
+{% for image in images %}
+<li>
+    <div id="image-{{ image.id }}" class="image_full" style="background-image: url('{{ MEDIA_URL }}{{  image.file }}');">
+        <p>{{ image.description }}</p><p>{{ forloop.counter }} / {{ images|length }}</p>
+    </div>
+</li>
+{% endfor %}
+</ul>
+</div>
+
+{# thumbnailed sized images for slider nav #}
+<div id="slider_nav" class="slider">
+<ul id="slider_nav_wrapper" class="slider_wrapper">
+{% for image in images %}
+<li>
+    <div class="thumbwrapper">
+    <div id="thumb-image-{{ image.id }}" class="image_nav" style="background-image: url('{{ MEDIA_URL }}{% thumbnail image.file 75 75 %}');">
+    </div>
+    </div>
+</li>
+{% endfor %}
+</ul>
 </div>
 </div>
+
+{% endwith %}
+
 <script>//FIXME MOVE TO SERVER
 /*
  * Swipe 2.0
@@ -383,7 +371,7 @@ function Swipe(container, options) {
         case 'oTransitionEnd':
         case 'otransitionend':
         case 'transitionend': offloadFn(this.transitionEnd(event)); break;
-        //case 'resize': offloadFn(setup.call()); break;
+        case 'resize': offloadFn(setup.call()); break;
       }
 
       if (options.stopPropagation) event.stopPropagation();
@@ -556,11 +544,11 @@ function Swipe(container, options) {
     }
 
     // set resize event on window
-    //window.addEventListener('resize', events, false);
+    window.addEventListener('resize', events, false);
 
   } else {
 
-    //window.onresize = function () { setup() }; // to play nice with old IE
+    window.onresize = function () { setup() }; // to play nice with old IE
 
   }
 
@@ -572,13 +560,13 @@ function Swipe(container, options) {
 
     },
     slide: function(to) {
-      index = parseInt(to);
       
       // cancel slideshow
       stop();
       
         //uuughhhh.
         var slide = jQuery(element);
+        console.log(element);
         var dist = to * width * -1; 
 
         slide.css('webkitTransitionDuration', speed + 'ms');
@@ -627,20 +615,16 @@ function Swipe(container, options) {
       stop();
 
       // reset element
-      element.style.width = '';
-      element.style.left = '';
-        element.style.webkitTransform = '';
-        element.style.msTransform = 
-        element.style.MozTransform = 
-        element.style.OTransform = '';
+      element.style.width = 'auto';
+      element.style.left = 0;
 
       // reset slides
       var pos = slides.length;
       while(pos--) {
 
         var slide = slides[pos];
-        slide.style.width = '';
-        slide.style.left = '';
+        slide.style.width = '100%';
+        slide.style.left = 0;
 
         if (browser.transitions) {
             translate(pos, 0, 0);
@@ -658,12 +642,12 @@ function Swipe(container, options) {
         element.removeEventListener('oTransitionEnd', events, false);
         element.removeEventListener('otransitionend', events, false);
         element.removeEventListener('transitionend', events, false);
-        //window.removeEventListener('resize', events, false);
+        window.removeEventListener('resize', events, false);
 
       }
       else {
 
-        //window.onresize = null;
+        window.onresize = null;
 
       }
 
@@ -684,180 +668,29 @@ if ( window.jQuery || window.Zepto ) {
 }
 </script>
 <script>
-    var display_sliders = function() {
-        jQuery('#slider_container').css('display', 'block');
-        slider_keybind();
-    }
-    var hide_sliders = function() {
-        jQuery('#slider_container').css('display', 'none');
-        jQuery(document).unbind('keypress');
-    }
+var main_slider = new Swipe(document.getElementById('slider_main'), {
+  speed: 400,
+  continuous: false,
+  disableScroll: false,
+  stopPropagation: false,
+});
 
-    var slider_keybind = function() {
-        jQuery(document.body).bind('keydown', function(e) {
-            switch(e.keyCode) {
-                case 39:
-                    slide_next();
-                break;
-                case 37:
-                    slide_prev();
-                break;
-                case 27:
-                    hide_sliders();
-                break;
-            }
-        });
-    }
-    slider_keybind();
-
-    jQuery('#close_slider').click(function() {
-        hide_sliders()
+var nav_slider = new Swipe(document.getElementById('slider_nav'), {
+  speed: 400,
+  continuous: false,
+  disableScroll: false,
+  stopPropagation: false,
+});
+jQuery('#slider_nav').css('padding-left', '45%');
+jQuery('#slider_nav_wrapper li').each(function() {
+    $(this).click(function() {
+        var new_slide = $(this).attr('data-index'); 
+        main_slider.slide(new_slide);
+        nav_slider.slide(new_slide);
     });
-    var main_slider;
-    var nav_slider;
-    var run_sliders = function(pos) {
-        main_slider = new Swipe(document.getElementById('slider_main'), {
-          startSlide: pos,
-          speed: 400,
-          continuous: false,
-          disableScroll: false,
-          stopPropagation: false,
-        });
-
-        nav_slider = new Swipe(document.getElementById('slider_nav'), {
-          speed: 400,
-          startSlide: pos,
-          continuous: false,
-          disableScroll: false,
-          stopPropagation: false,
-        });
-        jQuery('#slider_nav').css('padding-left', '45%');
-    };
-
-    jQuery('#slider_nav_wrapper li').each(function() {
-        $(this).click(function() {
-            var new_slide = $(this).attr('data-index'); 
-            main_slider.slide(new_slide);
-            nav_slider.slide(new_slide);
-        });
-    });
-    jQuery('.next_slider_button').click(function() {
-        slide_next();
-    });
-    jQuery('.prev_slider_button').click(function() {
-        slide_prev()
-    });
-
-
-    var slide_next = function() {
-        var slide = main_slider.getPos() + 1;
-        if (slide >= main_slider.getNumSlides()) { return; };
-        main_slider.slide(slide);
-        nav_slider.slide(slide);
-    }
-
-    var slide_prev = function () {
-        var slide = main_slider.getPos() - 1;
-        if (slide < 0) { return; };
-        main_slider.slide(slide);
-        nav_slider.slide(slide);
-    }
-
-    run_sliders(0);
-
-    var slide_to = function(pos) {
-        if (!pos) { pos = 0; };
-        main_slider.slide(pos);
-        nav_slider.slide(pos);
-    }
-
-    //run resize once please
-    var rtime = new Date(1, 1, 2000, 12,00,00);
-    var timeout = false;
-    var delta = 200;
-    $(window).resize(function() {
-        rtime = new Date();
-        if (timeout === false) {
-            timeout = true;
-            setTimeout(resizeend, delta);
-        }
-    });
-
-    function resizeend() {
-        if (new Date() - rtime < delta) {
-            setTimeout(resizeend, delta);
-        } else {
-            timeout = false;
-            reset_sliders();
-        }               
-    }
-
-
-    var reset_sliders = function() {
-        var pos = main_slider.getPos();
-        main_slider.kill();
-        nav_slider.kill();
-        jQuery('#slider_nav').css('padding-left', '');
-        run_sliders();
-        slide_to(pos);
-    };
-
-    var thumbnails = jQuery('.gallery .thumbnail');
-    for (var i = 0 ; i < thumbnails.length; i++) {
-        var $this = jQuery(thumbnails[i]);
-        $this.attr('data-index', i);
-        $this.click(function(e) {
-            e.preventDefault();
-            var pos = jQuery(this).attr('data-index');
-            display_sliders();
-            slide_to(pos);
-            return false;
-        });
-    }
+});
+main_slider.slide(0);
+nav_slider.slide(0);
 
 </script>
-{% endblock %}
-
-{% block very_top %}
-
-{% with page.gallery.images.all as images %}
-
-<div id="slider_container">
-    <span id="close_slider" style="float:right;">X</span>
-{# full sized images for slider #}
-<div id="slider_main" class="slider" >
-<ul id="slider_main_wrapper" class="slider_wrapper">
-{% for image in images %}
-<li>
-    <div id="image-{{ image.id }}" class="image_full" style="background-image: url('{{ MEDIA_URL }}{{  image.file }}');">
-        <div class="panel span2 image_description">
-            <p>{{ image.description }}</p><p>{{ forloop.counter }} / {{ images|length }}</p>
-        </div>
-    </div>
-</li>
-{% endfor %}
-</ul>
-</div>
-
-{# thumbnailed sized images for slider nav #}
-<div id="slider_nav" class="slider">
-<ul id="slider_nav_wrapper" class="slider_wrapper">
-{% for image in images %}
-<li>
-    <div class="thumbwrapper">
-    <div id="thumb-image-{{ image.id }}" class="image_nav" style="background-image: url('{{ MEDIA_URL }}{% thumbnail image.file 75 75 %}');">
-    </div>
-    </div>
-</li>
-{% endfor %}
-</ul>
-</div>
-<div class="slider_button_holder">
-<div class="slider_button prev_slider_button"></div>
-<div class="slider_button next_slider_button"></div>
-</div>
-</div>
-
-{% endwith %}
-
 {% endblock %}
