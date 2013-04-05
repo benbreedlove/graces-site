@@ -120,7 +120,7 @@
 {% endblock %}
 
 {% block blog_post_detail_related_posts %}
-<div data-src="{{ blog_post.get_absolute_url }}" class="OUTBRAIN" ></div>
+<div data-src="{{ request.build_absolute_uri }}" class="OUTBRAIN" ></div>
 <script type="text/javascript">(function(){window.OB_platformType=8;window.OB_langJS="http://widgets.outbrain.com/lang_en.js";window.OBITm="1364686483308";window.OB_recMode="brn_strip";var ob=document.createElement("script");ob.type="text/javascript";ob.async=true;ob.src="http"+("https:"===document.location.protocol?"s":"")+"://widgets.outbrain.com/outbrainLT.js";var h=document.getElementsByTagName("script")[0];h.parentNode.insertBefore(ob,h);})();</script>
 {% comment %}
 {% if blog_post.related_posts.all %}
