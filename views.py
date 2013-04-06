@@ -2,7 +2,10 @@ import os
 from django.template import Context
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils.html import mark_safe
 from mezzanine.core.views import direct_to_template
+
+import pprint
 
 from urlparse import urlparse, urlunparse
 
@@ -21,20 +24,32 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
+from django.contrib.sites.models import get_current_site
+
 def blog_homepage(request):
     """ 
     Display the homepage
+    FIXME swap these when we push over the new domain
     """
-    settings.use_editable()
+    current_site = get_current_site(request).domain
 
-    blog_posts = BlogPost.objects.published(for_user=request.user)
+    if current_site == "solarpoweredyogi.com":
+        page = get_object_or_404(Page, slug="grace-breedlove-photography")
+        content = mark_safe(page.richtextpage.content)
+        context = { 'page' : page, 'content' : content  }
+        return render(request, "photo_index.html", context)
 
-    slider_posts = blog_posts[:4]
-    section_posts = blog_posts[0:15]
+    if current_site == "gracebreedlove.com": 
+        settings.use_editable()
+        blog_posts = BlogPost.objects.published(for_user=request.user)
 
-    context = { "slider_posts" : slider_posts, "section_posts": section_posts }
+        slider_posts = blog_posts[:4]
+        section_posts = blog_posts[0:15]
 
-    return render(request, "index.html", context)
+        context = { "slider_posts" : slider_posts, "section_posts": section_posts }
+
+        return render(request, "index.html", context)
+    raise Exception(current_site)
 
 
 THUMBNAIL_SIZE = ( 425, 300 )
