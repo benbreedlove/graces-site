@@ -71,6 +71,15 @@
 
 {% for blog_post in blog_posts.object_list %}
 <article>
+<div class="row section_post blog-list-detail">
+<div class="span4 section_image">
+    {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
+    {% editable blog_post.featured_image %}
+    <div style="background-image: url('{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 470 250 %}');"></div>
+    {% endeditable %}
+    {% endif %}
+</div>
+<div class="span4 section_content">
 {% block blog_post_list_post_title %}
 {% editable blog_post.title %}
 <h2 class="blog_list_post_title">
@@ -105,7 +114,7 @@
 {% endblock %}
 
 {% block blog_post_list_post_links %}
-<p class="blog-list-detail">
+<p class="">
     {% if blog_post.keyword_list %}
     {% trans "Tags" %}:
     {% spaceless %}
@@ -129,6 +138,8 @@
     {% endif %}
 </p>
 {% endblock %}
+</div>
+</div>
 </article>
 {% endfor %}
 
