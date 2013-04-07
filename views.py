@@ -49,7 +49,7 @@ def blog_homepage(request):
         context = { "slider_posts" : slider_posts, "section_posts": section_posts }
 
         return render(request, "index.html", context)
-    raise Exception(current_site)
+    raise Exception("Unexpected site, site is " + current_site)
 
 
 THUMBNAIL_SIZE = ( 425, 300 )
