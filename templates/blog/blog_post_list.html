@@ -72,7 +72,7 @@
 {% for blog_post in blog_posts.object_list %}
 <article>
 <div class="row section_post blog-list-detail">
-<div class="span4 section_image">
+<div class="span5 section_image">
     {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
     {% editable blog_post.featured_image %}
     <div style="background-image: url('{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 470 250 %}');"></div>
