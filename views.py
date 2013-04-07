@@ -49,7 +49,16 @@ def blog_homepage(request):
         context = { "slider_posts" : slider_posts, "section_posts": section_posts }
 
         return render(request, "index.html", context)
-    raise Exception("Unexpected site, site is " + current_site)
+
+    settings.use_editable()
+    blog_posts = BlogPost.objects.published(for_user=request.user)
+
+    slider_posts = blog_posts[:4]
+    section_posts = blog_posts[0:15]
+
+    context = { "slider_posts" : slider_posts, "section_posts": section_posts }
+
+    return render(request, "index.html", context)
 
 
 THUMBNAIL_SIZE = ( 425, 300 )
