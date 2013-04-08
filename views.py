@@ -29,17 +29,16 @@ from django.contrib.sites.models import get_current_site
 def blog_homepage(request):
     """ 
     Display the homepage
-    FIXME swap these when we push over the new domain
     """
     current_site = get_current_site(request).domain
 
-    if current_site == "solarpoweredyogi.com":
-        page = get_object_or_404(Page, slug="grace-breedlove-photography")
-        content = mark_safe(page.richtextpage.content)
-        context = { 'page' : page, 'content' : content  }
-        return render(request, "photo_index.html", context)
+#    if current_site == "gracebreedlove.com": 
+#        page = get_object_or_404(Page, slug="grace-breedlove-photography")
+#        content = mark_safe(page.richtextpage.content)
+#        context = { 'page' : page, 'content' : content  }
+#        return render(request, "photo_index.html", context)
 
-    if current_site == "gracebreedlove.com": 
+    if current_site == "solarpoweredyogi.com":
         settings.use_editable()
         blog_posts = BlogPost.objects.published(for_user=request.user)
 
